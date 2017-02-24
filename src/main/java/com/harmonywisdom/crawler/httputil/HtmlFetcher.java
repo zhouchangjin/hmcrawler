@@ -25,7 +25,13 @@ public class HtmlFetcher {
 			URIBuilder builder = new URIBuilder().setPath(url);
 			for(String param:params){
 				String pair[]=param.split("=");
-				builder.addParameter(pair[0], pair[1]);
+				if(pair.length==2){
+					builder.addParameter(pair[0], pair[1]);
+				}else{
+					System.out.println(param+"格式有问题");
+					return "";
+				}
+				
 			}
 			URI uri=builder.build();
 			HttpGet httpget=new HttpGet(uri);
