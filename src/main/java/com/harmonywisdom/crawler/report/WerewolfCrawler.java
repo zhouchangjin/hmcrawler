@@ -20,14 +20,14 @@ public class WerewolfCrawler {
 			FileWriter fw2=new FileWriter(new File("d:/werewolf/game.csv"));
 			BufferedWriter bw1=new BufferedWriter(fw);
 			BufferedWriter bw2=new BufferedWriter(fw2);
-			String headline="游戏编号,第n天,操作人,对象,动作类型码,动作类型含义,有效票数,操作人编号,对象编号,操作人角色类型,新排游戏编号,游戏人数,游戏结果,游戏时间,房间号";
+			String headline="游戏编号,第n天,操作人,对象,动作类型码,动作类型含义,有效票数,操作人编号,对象编号,操作人角色类型,指向对象类型,新排游戏编号,游戏人数,游戏结果,游戏时间,房间号";
 			bw2.write(headline);
 			bw2.newLine();
 			String url="http://cdnlangren.51shousha.com/WereWolfService/GetGameReportService";
-			int idStart=1103969;
+			int idStart=1153969;
 			HashMap<String,String> globalPlayer=new HashMap<String, String>();
-			int gameCounter=0;
-			for(int i=1;i<20000;i++){
+			int gameCounter=49115;
+			for(int i=1;i<50000;i++){
 				int _id=idStart+i;
 				System.out.println(_id+","+i+"=========================================");
 				String result=HtmlFetcher.FetchHtml(url,"gameid="+_id);
@@ -75,14 +75,17 @@ public class WerewolfCrawler {
 						if(toid==null){
 							toid="";
 						}
+						String toRoleType="";
 						if(toid.contains(",")){
 							String ids[]=toid.split(",");
 							for(String idi:ids){
 								toNum+=playerMap.get(idi)+"-";
+								toRoleType+=playerRole.get(toid)+";";
 							}
 							toNum=toNum.substring(0, toNum.length()-1);
 						}else{
 							toNum=playerMap.get(toid)+"";
+							toRoleType=playerRole.get(toid);
 						}
 						String fromNum=playerMap.get(fromid);
 						String roleType=playerRole.get(fromid);
@@ -90,7 +93,7 @@ public class WerewolfCrawler {
 						Integer voteType=Integer.parseInt((String)votei.get("votetype"));
 						System.out.println(votei);
 						VoteType type=VoteType.parseType(voteType);
-						String line=_id+","+daynum+","+fromNum+","+toNum+","+voteType+","+type.getName()+","+voteNum+","+fromid+","+toid.replaceAll(",", "-")+","+roleType+","+gameCounter+","+playerMap.size()+","+gameresult+","+createTime+","+roomid;
+						String line=_id+","+daynum+","+fromNum+","+toNum+","+voteType+","+type.getName()+","+voteNum+","+fromid+","+toid.replaceAll(",", "-")+","+roleType+","+toRoleType+","+gameCounter+","+playerMap.size()+","+gameresult+","+createTime+","+roomid;
 						bw2.write(line);
 						bw2.newLine();
 						bw2.flush();
