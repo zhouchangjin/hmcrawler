@@ -67,6 +67,41 @@ public class HtmlFetcher {
 
 	}
 	
+	public static InputStream getInputSteam(String url,String... params){
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		URIBuilder builder = new URIBuilder().setPath(url);
+		for(String param:params){
+			String pair[]=param.split("=");
+			if(pair.length==2){
+				builder.addParameter(pair[0], pair[1]);
+			}else{
+				System.out.println(param+"格式有问题");
+				return null;
+			}
+			
+		}
+		URI uri;
+		try {
+			uri = builder.build();
+			HttpGet httpget=new HttpGet(uri);
+			CloseableHttpResponse response=httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			return entity.getContent();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}	
 	public static String FetchHtml(String url){
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
