@@ -65,7 +65,7 @@ public class HTMLNewsContentExtractor implements IContentExtractor{
 					}
 					
 				}
-				//System.out.println(newLine);
+				System.out.println(newLine);
 				int allCharacters=newLine.length();
 				String chineseLine=RegExpUtil.replaceAllEnglish(newLine);
 				int chineses=chineseLine.length();
