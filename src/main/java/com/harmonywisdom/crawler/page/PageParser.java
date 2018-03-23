@@ -1,6 +1,7 @@
 package com.harmonywisdom.crawler.page;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,6 +12,20 @@ import java.util.regex.Pattern;
 
 
 public class PageParser {
+	
+	public static Map<String,Tuple<String,String>> parsePage(String source){
+		HashMap<String, Tuple<String, String>> map=new HashMap<String,Tuple<String,String>>();
+		 String reg = "<([a-z]+)[^<]*?>([^<]*?)</[^>]*?>";
+		 Pattern p=Pattern.compile(reg);
+		 Matcher m=p.matcher(source);
+		 while(m.find()){
+			 String ele=m.group(1);
+			 String text=m.group(2);
+			 Tuple<String,String> t=new Tuple<String, String>(ele, text);
+			 map.put(ele, t);
+		 }
+		 return map;
+	}
 	
 	public static List<Tuple<String,String>> match(String source){
 		 ArrayList<Tuple<String,String>> res=new ArrayList<Tuple<String,String>>();
