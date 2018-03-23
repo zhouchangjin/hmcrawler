@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -23,10 +24,10 @@ public class RedirectFetcher {
 
 	}
 	
-	@Deprecated
+
 	public static String getRedirect(String url, String... params) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-
+		RequestConfig config=RequestConfig.custom().setRedirectsEnabled(false).build();
 		try {
 			URIBuilder builder = new URIBuilder().setPath(url);
 			for (String param : params) {
@@ -41,6 +42,7 @@ public class RedirectFetcher {
 			}
 			URI uri = builder.build();
 			HttpGet httpget = new HttpGet(uri);
+			httpget.setConfig(config);
 			CloseableHttpResponse response = httpclient.execute(httpget);
 			Header h = response.getFirstHeader("Location");
 			String location = h.getValue();
