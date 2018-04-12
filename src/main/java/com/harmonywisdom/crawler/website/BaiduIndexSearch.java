@@ -104,7 +104,8 @@ public class BaiduIndexSearch {
 	public static void main(String args[]) {
 		try {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
-			BufferedWriter bw=new BufferedWriter(new FileWriter(new File("c:/index.csv")));
+			SimpleDateFormat sdfFile=new SimpleDateFormat("yyyyMMdd");
+			BufferedWriter bw=new BufferedWriter(new FileWriter(new File("c:/index"+sdfFile.format(new Date())+".csv")));
 			List<IndexingStatus> islist=siteIndex("51meiyu.cn", 1);
 			for(IndexingStatus s:islist) {
 				String line=s.getUrl()+","+sdf.format(s.getTime())+","+"收录,未知,未知,未知,未知";
