@@ -8,12 +8,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 
 public class HtmlFetcher {
 	public static String FetchHtml(String url,String... params){
@@ -101,7 +103,84 @@ public class HtmlFetcher {
 			return null;
 		}
 		
-	}	
+	}
+	
+	public static String FetchFromUrlWithProxy(String urlWithParameters,String host,int port) {
+		
+		HttpHost proxy = new HttpHost(host, port);
+		DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+		CloseableHttpClient httpclient = HttpClients.custom()
+		        .setRoutePlanner(routePlanner)
+		        .build();
+		try {
+			HttpGet httpget=new HttpGet(urlWithParameters);
+			CloseableHttpResponse response=httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			StringBuffer sb=new StringBuffer();
+		    if (entity != null) {
+		        InputStream instream = entity.getContent();
+		        BufferedReader br=new BufferedReader(new InputStreamReader(instream));
+		        try {
+		            // do something useful
+		        	String line="";
+		        	while((line=br.readLine())!=null){
+		        		//System.out.println(line);
+		        		sb.append(line);
+		        	}
+		        	return sb.toString();
+		        } finally {
+		            instream.close();
+		        }
+		    }
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+		return "";
+	}
+	
+	public static String FetchFromUrl(String urlWithParameters) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		
+		
+		try {
+			HttpGet httpget=new HttpGet(urlWithParameters);
+			CloseableHttpResponse response=httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			StringBuffer sb=new StringBuffer();
+		    if (entity != null) {
+		        InputStream instream = entity.getContent();
+		        BufferedReader br=new BufferedReader(new InputStreamReader(instream));
+		        try {
+		            // do something useful
+		        	String line="";
+		        	while((line=br.readLine())!=null){
+		        		//System.out.println(line);
+		        		sb.append(line);
+		        	}
+		        	return sb.toString();
+		        } finally {
+		            instream.close();
+		        }
+		    }
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+		return "";
+	}
+	
+	@Deprecated
 	public static String FetchHtml(String url){
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
