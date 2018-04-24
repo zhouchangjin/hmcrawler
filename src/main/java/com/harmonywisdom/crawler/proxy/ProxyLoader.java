@@ -6,7 +6,7 @@ import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 
 
 
-class ProxyLoader {
+public class ProxyLoader {
 	
 	public String url;
 	public ResultParser parser;
@@ -16,7 +16,7 @@ class ProxyLoader {
 
 	}
 	
-	ProxyLoader(String url,ResultParser parser){
+	public ProxyLoader(String url,ResultParser parser){
 		this.url=url;
 		this.parser=parser;
 	}

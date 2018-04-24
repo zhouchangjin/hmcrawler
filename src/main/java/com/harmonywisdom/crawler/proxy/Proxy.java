@@ -3,7 +3,7 @@ package com.harmonywisdom.crawler.proxy;
 public class Proxy {
 	
 	String host;
-	String port;
+	Integer port;
 	String name;
 	String password;
 	Boolean isLoginRequired;
@@ -13,10 +13,10 @@ public class Proxy {
 	public void setHost(String host) {
 		this.host = host;
 	}
-	public String getPort() {
+	public Integer getPort() {
 		return port;
 	}
-	public void setPort(String port) {
+	public void setPort(Integer port) {
 		this.port = port;
 	}
 	public String getName() {
