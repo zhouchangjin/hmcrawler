@@ -4,54 +4,43 @@ package com.harmonywisdom.crawler.page;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.xerces.xni.parser.XMLDocumentFilter;
+
 import org.apache.xpath.XPathAPI;
-import org.cyberneko.html.filters.Purifier;
-import org.cyberneko.html.parsers.DOMParser;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.DomSerializer;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.TagNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 
 import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 
 
 public class Selector implements IPageSelector{
 	String cont;
-	String xmlResult;
 	Document doc;
-	public Selector(String xml) {
-		this.cont=xml;
+	public Selector(String content) {
+		this.cont=content;
 		initialize();
 	}
 	
 	public void initialize() {
-		
-		DOMParser parser=new DOMParser();
-		 XMLDocumentFilter noop = new Purifier();
-		 XMLDocumentFilter[] filters = { noop };
-		 try {
-			parser.setProperty("http://cyberneko.org/html/properties/filters", filters);
-			parser.setFeature("http://xml.org/sax/features/namespaces", false);  
-			 ByteArrayInputStream bio=new ByteArrayInputStream(cont.getBytes("UTF-8"));
-			 InputSource se=new InputSource(bio);
-			 parser.parse(se);
-			 doc=parser.getDocument();
-		} catch (SAXNotRecognizedException e) {
-			e.printStackTrace();
-		} catch (SAXNotSupportedException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
+		HtmlCleaner cleaner=new HtmlCleaner();
+		try {
+			TagNode node=cleaner.clean(new ByteArrayInputStream(cont.getBytes()));
+
+			this.doc= new DomSerializer(new CleanerProperties()).createDOM(node);
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
+	 
 	}
 
 	@Override
@@ -74,8 +63,8 @@ public class Selector implements IPageSelector{
 
 		Selector parser=new Selector(HtmlFetcher.FetchHtml("http://www.51meiyu.cn"));
 		
-		String tmp=parser.selectByXpath("//DIV");
-		System.out.println(tmp);
+		String tmp=parser.selectByXpath("//div[@class='phonelabel']");
+		System.out.println("=========="+tmp);
 	}
 
 }
