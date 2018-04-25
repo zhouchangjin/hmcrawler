@@ -7,7 +7,7 @@ import org.w3c.tidy.Tidy;
 
 import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 
-public class XHTMLTider implements IPageTider {
+public class JTidyTider implements IPageTider {
 
 	@Override
 	public String htmlToXml(String input) {
@@ -23,8 +23,8 @@ public class XHTMLTider implements IPageTider {
 	
 	
 	public static void main(String ars[]) {
-		//XHTMLTider tider=new XHTMLTider();
-		//System.out.println(tider.htmlToXml(HtmlFetcher.FetchHtml("http://www.baidu.com")));
+		JTidyTider tider=new JTidyTider();
+		System.out.println(tider.htmlToXml(HtmlFetcher.FetchHtml("http://www.baidu.com")));
 
 	}
 
