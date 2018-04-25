@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.stream.MalformedJsonException;
 import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 
 public class WerewolfCrawler {

@@ -3,7 +3,6 @@ package com.harmonywisdom.crawler.page.test;
 import java.io.DataInputStream;
 import java.io.InputStream;
 
-import javax.swing.text.html.HTML;
 
 import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 import com.harmonywisdom.crawler.page.HTMLNewsContentExtractor;
