@@ -10,10 +10,10 @@ import org.dom4j.io.SAXReader;
 import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 
 
-public class DOMParser implements IPageSelector{
+public class Selector implements IPageSelector{
 	String xmlCont;
 	Document document;
-	public DOMParser(String xml) {
+	public Selector(String xml) {
 		this.xmlCont=xml;
 		initialize();
 	}
@@ -40,7 +40,7 @@ public class DOMParser implements IPageSelector{
 		
 		JTidyTider tider=new JTidyTider();
 		String res=tider.htmlToXml(HtmlFetcher.FetchHtml("http://www.baidu.com"));
-		DOMParser parser=new DOMParser(res);
+		Selector parser=new Selector(res);
 		//String tmp=parser.selectByXpath("//div[id='head']");
 		//System.out.println(tmp);
 	}

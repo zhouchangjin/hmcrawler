@@ -25,6 +25,7 @@ public class JTidyTider implements IPageTider {
 	public static void main(String ars[]) {
 		JTidyTider tider=new JTidyTider();
 		System.out.println(tider.htmlToXml(HtmlFetcher.FetchHtml("http://www.baidu.com")));
+		
 
 	}
 
