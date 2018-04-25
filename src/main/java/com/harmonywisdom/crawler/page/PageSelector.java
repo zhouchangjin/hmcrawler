@@ -4,6 +4,8 @@ package com.harmonywisdom.crawler.page;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -19,10 +21,10 @@ import org.w3c.dom.Node;
 import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 
 
-public class Selector implements IPageSelector{
+public class PageSelector implements IPageSelector{
 	String cont;
 	Document doc;
-	public Selector(String content) {
+	public PageSelector(String content) {
 		this.cont=content;
 		initialize();
 	}
@@ -57,14 +59,32 @@ public class Selector implements IPageSelector{
 		}
 	}
 	
+	@Override
+	public String selectAttribute(String path, String attributeName) {
+		// TODO Auto-generated method stub
+		try {
+			Node node=XPathAPI.selectSingleNode(doc, path);
+			return node.getAttributes().getNamedItem(attributeName).getNodeValue();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public static void main(String args[]) {
 		
 
-		Selector parser=new Selector(HtmlFetcher.FetchHtml("http://www.51meiyu.cn"));
+		PageSelector parser=new PageSelector(HtmlFetcher.FetchHtml("http://www.51meiyu.cn"));
 		
 		String tmp=parser.selectByXpath("//div[@class='phonelabel']");
-		System.out.println("=========="+tmp);
+		String tm2=parser.selectAttribute("//p[@class='else_sort']/a", "href");
+		System.out.println("=========="+tm2);
 	}
+
+
+
+
 
 }
