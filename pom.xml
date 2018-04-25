@@ -26,11 +26,6 @@
     <version>2.8.0</version>
 	</dependency>
 	<dependency>
-    	<groupId>jtidy</groupId>
-    	<artifactId>jtidy</artifactId>
-    	<version>4aug2000r7-dev</version>
-	</dependency>
-	<dependency>
   		<groupId>com.gamewolf</groupId>
   		<artifactId>util</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
@@ -40,6 +35,7 @@
     		<artifactId>nekohtml</artifactId>
     		<version>1.9.22</version>
 	</dependency>
+
   </dependencies>
   
   <properties>
