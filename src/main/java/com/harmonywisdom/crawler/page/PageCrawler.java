@@ -39,7 +39,6 @@ public class PageCrawler {
 		String res="";
 		for(String url:pageUrl) {
 			res=HtmlFetcher.FetchFromUrl(url);
-			System.out.println(res);
 			selector.setCont(res);
 			selector.initialize();
 			Object obj=selector.buildObject(binding);

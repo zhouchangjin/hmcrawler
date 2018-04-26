@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -148,6 +150,20 @@ public class PageSelector implements IPageSelector {
 				} else if (type.equals("value")) {
 					String value = selectByXpath(xPath);
 					process(obj, prop, dataType, value);
+				} else if(type.equals("reg")) {
+					String value=selectRegExp(xPath);
+					process(obj, prop, dataType, value);
+				} else if(type.equals("before-after")) {
+					String params[]=xPath.split("-");
+					if(params.length==2) {
+						String before=params[0];
+						String after=params[1];
+						before.replace("{any}", "[\\s\\S]*?");
+						after.replace("{any}", "[\\s\\S]*?");
+						String reg=before+"([\\s\\S]*?)"+after;
+						String value=selectRegExp(reg);
+						process(obj, prop, dataType, value);
+					}
 				}
 
 			}
@@ -172,6 +188,9 @@ public class PageSelector implements IPageSelector {
 		Node node;
 		try {
 			node = XPathAPI.selectSingleNode(doc, path);
+			if(node==null) {
+				return "";
+			}
 			return node.getNodeValue();
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
@@ -191,6 +210,17 @@ public class PageSelector implements IPageSelector {
 		
 		
 		System.out.println("==========" + tm2);
+	}
+
+	@Override
+	public String selectRegExp(String reg) {
+		// TODO Auto-generated method stub
+		Pattern pat = Pattern.compile(reg);  
+	    Matcher mat = pat.matcher(cont);  
+	    if(mat.find()){
+	       return mat.group(1);
+	    }
+		return null;
 	}
 
 }

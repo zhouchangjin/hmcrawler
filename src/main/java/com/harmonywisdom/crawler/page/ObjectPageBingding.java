@@ -2,6 +2,10 @@ package com.harmonywisdom.crawler.page;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+
+import com.gamewolf.util.datafile.XMLNode;
+import com.gamewolf.util.datafile.XMLReader;
 
 public class ObjectPageBingding {
 	
@@ -42,6 +46,21 @@ public class ObjectPageBingding {
 	
 	public Iterator<String> propertyIterator(){
 		return nameBind.keySet().iterator();
+	}
+	
+	public static ObjectPageBingding buildFromXML(String path) {
+		ObjectPageBingding binding=new ObjectPageBingding();
+		XMLNode node=XMLReader.loadXMLFile(path);
+		
+		List<XMLNode> nodes=node.getNodes("Prop");
+		for(XMLNode current:nodes) {
+			String name=current.getAttribute("name").toString();
+			String type=current.getAttribute("type").toString();
+			String clz=current.getAttribute("class").toString();
+			String xPath=current.getNode("Expression").getValue();
+			binding.set(name, xPath, type, clz);
+		}
+		return binding;
 	}
 
 	public static void main(String[] args) {

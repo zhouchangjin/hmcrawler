@@ -7,5 +7,7 @@ public interface IPageSelector {
 	
 	String selectAttribute(String path);
 	
-	<T> T buildObject(ObjectPageBingding binding);
+	String selectRegExp(String reg);
+	
+	Object buildObject(ObjectPageBingding binding);
 }
