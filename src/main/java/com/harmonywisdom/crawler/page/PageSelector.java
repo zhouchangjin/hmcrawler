@@ -150,7 +150,10 @@ public class PageSelector implements IPageSelector {
 				} else if (type.equals("value")) {
 					String value = selectByXpath(xPath);
 					process(obj, prop, dataType, value);
-				} else if(type.equals("reg")) {
+				}else if(type.equals("html")) {
+					String value = selectContentByXpath(xPath);
+					process(obj, prop, dataType, value);
+				}else if(type.equals("reg")) {
 					String value=selectRegExp(xPath);
 					process(obj, prop, dataType, value);
 				} else if(type.equals("before-after")) {
@@ -180,6 +183,18 @@ public class PageSelector implements IPageSelector {
 			return null;
 		}
 
+	}
+
+	public String selectContentByXpath(String xpath) {
+		Node node;
+		try {
+			node = XPathAPI.selectSingleNode(doc, xpath);
+			return W3CNodeUtil.getInnerHTML(node);
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 	@Override
