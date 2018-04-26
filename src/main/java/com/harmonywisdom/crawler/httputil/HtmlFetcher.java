@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -154,8 +156,19 @@ public class HtmlFetcher {
 			HttpEntity entity = response.getEntity();
 			StringBuffer sb=new StringBuffer();
 		    if (entity != null) {
+		    	String charset=entity.getContentType().toString();
+		    	CharsetDecoder decoder=null;
+		    	if(charset.contains("gb2312")) {
+		    		decoder=Charset.forName("GBK").newDecoder();
+		    	}
 		        InputStream instream = entity.getContent();
-		        BufferedReader br=new BufferedReader(new InputStreamReader(instream));
+		        BufferedReader br=null;
+		        if(decoder==null) {
+		        	br=new BufferedReader(new InputStreamReader(instream));
+		        }else {
+		        	br=new BufferedReader(new InputStreamReader(instream,decoder)); 
+		        }
+		        
 		        try {
 		            // do something useful
 		        	String line="";

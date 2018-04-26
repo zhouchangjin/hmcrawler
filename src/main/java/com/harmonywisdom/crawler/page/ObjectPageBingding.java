@@ -62,6 +62,21 @@ public class ObjectPageBingding {
 		}
 		return binding;
 	}
+	
+	public static ObjectPageBingding buildFromXMLString(String cont) {
+		ObjectPageBingding binding=new ObjectPageBingding();
+		XMLNode node=XMLReader.parseXMLString(cont);
+		
+		List<XMLNode> nodes=node.getNodes("Prop");
+		for(XMLNode current:nodes) {
+			String name=current.getAttribute("name").toString();
+			String type=current.getAttribute("type").toString();
+			String clz=current.getAttribute("class").toString();
+			String xPath=current.getNode("Expression").getValue();
+			binding.set(name, xPath, type, clz);
+		}
+		return binding;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +20,7 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.harmonywisdom.crawler.httputil.HtmlFetcher;
 
@@ -73,7 +76,12 @@ public class PageSelector implements IPageSelector {
 		Node node;
 		try {
 			node = XPathAPI.selectSingleNode(doc, xpath);
-			return node.getTextContent();
+			if(node==null) {
+				return "";
+			}else {
+				return node.getTextContent();
+			}
+			
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,8 +103,15 @@ public class PageSelector implements IPageSelector {
 	}
 
 
-	private void process(Object obj, String prop, String dataType, String value) {
+	private void process(Object obj, String prop, String dataType, Object val) {
 		String propName = prop.substring(0, 1).toUpperCase() + prop.substring(1);
+		String value="";
+		List objList=null;
+		if(val instanceof String) {
+			value=val.toString();
+		}else if(val instanceof List) {
+			objList=(List)val;
+		}
 		try {
 				if (dataType.equals("String")) {
 					Method m = obj.getClass().getMethod("set" + propName, String.class);
@@ -116,6 +131,11 @@ public class PageSelector implements IPageSelector {
 						m.invoke(obj, Double.parseDouble(value));
 					}
 					
+				}else if(dataType.equals("List")) {
+					Method m = obj.getClass().getMethod("set" + propName, List.class);
+					if(m!=null) {
+						m.invoke(obj,val);
+					}
 				}
 
 		} catch (NoSuchMethodException e) {
@@ -142,33 +162,38 @@ public class PageSelector implements IPageSelector {
 				String xPath = binding.getXpath(prop);
 				String type = binding.getXpathType(prop);
 				String dataType = binding.getDataTypeBind(prop);
-				if (type.equals("attr")) {
-					
-					String value=selectAttribute(xPath);
-					process(obj, prop, dataType, value);
-
-				} else if (type.equals("value")) {
-					String value = selectByXpath(xPath);
-					process(obj, prop, dataType, value);
-				}else if(type.equals("html")) {
-					String value = selectContentByXpath(xPath);
-					process(obj, prop, dataType, value);
-				}else if(type.equals("reg")) {
-					String value=selectRegExp(xPath);
-					process(obj, prop, dataType, value);
-				} else if(type.equals("before-after")) {
-					String params[]=xPath.split("-");
-					if(params.length==2) {
-						String before=params[0];
-						String after=params[1];
-						before.replace("{any}", "[\\s\\S]*?");
-						after.replace("{any}", "[\\s\\S]*?");
-						String reg=before+"([\\s\\S]*?)"+after;
-						String value=selectRegExp(reg);
+				if(!dataType.startsWith("List")) {
+					if (type.equals("attr")) {
+						String value=selectAttribute(xPath);
 						process(obj, prop, dataType, value);
+					} else if (type.equals("value")) {
+						String value = selectByXpath(xPath);
+						process(obj, prop, dataType, value);
+					}else if(type.equals("html")) {
+						String value = selectContentByXpath(xPath);
+						process(obj, prop, dataType, value);
+					}else if(type.equals("reg")) {
+						String value=selectRegExp(xPath);
+						process(obj, prop, dataType, value);
+					} else if(type.equals("before-after")) {
+						String params[]=xPath.split("-");
+						if(params.length==2) {
+							String before=params[0];
+							String after=params[1];
+							before=before.replace("{any}", "[\\s\\S]*?");
+							after=after.replace("{any}", "[\\s\\S]*?");
+							String reg=before+"([\\s\\S]*?)"+after;
+							String value=selectRegExp(reg);
+							process(obj, prop, dataType, value);
+						}
+					}
+				}else {
+					if(type.equals("attr")) {
+						List list=selectAttributes(xPath);
+						process(obj,prop,dataType,list);
 					}
 				}
-
+				
 			}
 			return obj;
 
@@ -194,6 +219,27 @@ public class PageSelector implements IPageSelector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "";
+		}
+	}
+	
+	public List<String> selectAttributes(String path){
+		List<String> list=new ArrayList<String>();
+		NodeList nodelist;
+		try {
+			nodelist = XPathAPI.selectNodeList(doc, path);
+			if(nodelist==null) {
+				return list;
+			}else {
+				for(int i=0;i<nodelist.getLength();i++) {
+					Node node=nodelist.item(i);
+					list.add(node.getNodeValue());
+				}
+			}
+			return list;
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
 		}
 	}
 
