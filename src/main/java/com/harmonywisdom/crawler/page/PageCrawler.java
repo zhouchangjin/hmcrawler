@@ -10,11 +10,19 @@ public class PageCrawler {
 	public List<String> pageUrl;
 	public PageSelector selector;
 	public ObjectPageBingding binding;
+	public IInitializer initialize=null;
 	
+	public void setInitializer(IInitializer init) {
+		selector.setInitializer(init);
+	}
 
 
 	public void addPage(String url) {
 		this.pageUrl.add(url);
+	}
+	
+	public void clearPage() {
+		this.pageUrl.clear();
 	}
 
 	public ObjectPageBingding getBinding() {

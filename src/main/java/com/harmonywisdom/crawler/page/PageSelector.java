@@ -28,6 +28,17 @@ public class PageSelector implements IPageSelector {
 	String cont;
 	Document doc;
 	Class clz;
+	IInitializer initializer=null;
+	
+	
+
+	public IInitializer getInitializer() {
+		return initializer;
+	}
+
+	public void setInitializer(IInitializer initializer) {
+		this.initializer = initializer;
+	}
 
 	public String getCont() {
 		return cont;
@@ -156,6 +167,9 @@ public class PageSelector implements IPageSelector {
 		// TODO Auto-generated method stub
 		try {
 			Object obj=clz.newInstance();
+			if(this.initializer!=null) {
+				this.initializer.initialize(obj);
+			}
 			Iterator<String> it = binding.propertyIterator();
 			while (it.hasNext()) {
 				String prop = it.next();
@@ -214,6 +228,7 @@ public class PageSelector implements IPageSelector {
 		Node node;
 		try {
 			node = XPathAPI.selectSingleNode(doc, xpath);
+			System.out.println(cont);
 			return W3CNodeUtil.getInnerHTML(node);
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block

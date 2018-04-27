@@ -21,6 +21,16 @@ public class ListPageSelector implements IListPageSelector {
 	String cont;
 	Document doc;
 	Class clz;
+	IInitializer initializer;
+	
+
+	public IInitializer getInitializer() {
+		return initializer;
+	}
+
+	public void setInitializer(IInitializer initializer) {
+		this.initializer = initializer;
+	}
 
 	public String getCont() {
 		return cont;
@@ -75,6 +85,7 @@ public class ListPageSelector implements IListPageSelector {
 				Node node=nodelist.item(i);
 				String cnt=W3CNodeUtil.getInnerHTML(node);
 				PageSelector selector=new PageSelector();
+				selector.setInitializer(initializer);
 				selector.setCont(cnt);
 				selector.setClz(clz);
 				selector.initialize();

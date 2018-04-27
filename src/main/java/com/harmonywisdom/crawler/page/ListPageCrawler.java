@@ -14,8 +14,18 @@ public class ListPageCrawler {
 	public String xpath;
 	public ObjectPageBingding binding;
 	public IOutput output;
+	public IInitializer initialize;
 	Class clz;
+
 	
+	public IInitializer getInitialize() {
+		return initialize;
+	}
+
+	public void setInitialize(IInitializer initialize) {
+		this.initialize = initialize;
+		selector.setInitializer(initialize);
+	}
 	public String getXpath() {
 		return xpath;
 	}
@@ -61,12 +71,13 @@ public class ListPageCrawler {
 	public ListPageCrawler(){
 		selector=new ListPageSelector();
 		
+		
 	}
 	
 	public void crawl(int startPage) {
 		String url=listUrl;
 		for(int i=startPage;i<=maxPageCount;i++) {
-			url=listUrl.replace("{page}",""+i);
+			url=listUrl.replace(pageTemp,""+i);
 			
 			System.out.println("采集第"+i+"页中.....");
 			String res=HtmlFetcher.FetchFromUrl(url);
