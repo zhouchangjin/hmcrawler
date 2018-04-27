@@ -3,7 +3,7 @@ package com.harmonywisdom.crawler.page;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.harmonywisdom.crawler.httputil.HtmlFetcher;
+import com.harmonywisdom.crawler.connection.HttpClientManager;
 
 public class PageCrawler {
 	
@@ -11,6 +11,7 @@ public class PageCrawler {
 	public PageSelector selector;
 	public ObjectPageBingding binding;
 	public IInitializer initialize=null;
+	public static HttpClientManager context=new HttpClientManager();
 	
 	public void setInitializer(IInitializer init) {
 		selector.setInitializer(init);
@@ -46,7 +47,7 @@ public class PageCrawler {
 		List<Object> list=new ArrayList<Object>();
 		String res="";
 		for(String url:pageUrl) {
-			res=HtmlFetcher.FetchFromUrl(url);
+			res=context.fetchHTML(url);
 			selector.setCont(res);
 			selector.initialize();
 			Object obj=selector.buildObject(binding);

@@ -232,6 +232,7 @@ public class PageSelector implements IPageSelector {
 			return W3CNodeUtil.getInnerHTML(node);
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			return "";
 		}
