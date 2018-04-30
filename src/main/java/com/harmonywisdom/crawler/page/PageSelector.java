@@ -229,6 +229,7 @@ public class PageSelector implements IPageSelector {
 		try {
 			node = XPathAPI.selectSingleNode(doc, xpath);
 			System.out.println(cont);
+			System.out.println(xpath);
 			return W3CNodeUtil.getInnerHTML(node);
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
