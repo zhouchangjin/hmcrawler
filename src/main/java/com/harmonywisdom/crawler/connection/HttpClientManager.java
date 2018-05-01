@@ -34,7 +34,9 @@ public class HttpClientManager {
 	
 	void buildCookieStore(String url,HttpGet httpget) {
 		cookieStore=new BasicCookieStore();
-		
+		if(headers==null) {
+			return;
+		}
 		for(Header cookieheader:headers) {
 			HeaderElement[] ele=cookieheader.getElements();
 			for(int i=0;i<ele.length;i++){
