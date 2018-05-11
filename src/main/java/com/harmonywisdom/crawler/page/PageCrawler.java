@@ -1,5 +1,7 @@
 package com.harmonywisdom.crawler.page;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,32 @@ public class PageCrawler {
 			selector.setCont(res);
 			selector.initialize();
 			Object obj=selector.buildObject(binding);
-			list.add(obj);
+			
+			
+			try {
+				Method m=obj.getClass().getMethod("setUrl", String.class);
+				m.invoke(obj, url);
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				list.add(obj);
+			}
+			
+			
+			
 		}
 		return list;
 	}
