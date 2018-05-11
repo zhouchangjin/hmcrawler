@@ -26,7 +26,9 @@ public class CrawlerInitializer {
 					crawler.setBinding(binding);
 					
 				}else {
-					System.out.println("尚未制作");
+					String path=setting.xmlPath()+"/"+setting.xmlFile();
+					ObjectPageBingding binding=ObjectPageBingding.buildFromXML(path);
+					crawler.setBinding(binding);
 					
 				}
 				
