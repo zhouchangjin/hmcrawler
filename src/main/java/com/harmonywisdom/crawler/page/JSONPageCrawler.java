@@ -66,6 +66,10 @@ public class JSONPageCrawler {
 
 		for(String url:pageUrl) {
 			res=context.fetchHTML(url);
+			//System.out.println(res);
+			if(res.contains("ErrorCode")) {
+				continue;
+			}
 			Gson gson=new Gson();
 			Object obj=gson.fromJson(res, clz);
 			list.add(obj);

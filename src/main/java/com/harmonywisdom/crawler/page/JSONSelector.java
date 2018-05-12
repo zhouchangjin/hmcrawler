@@ -59,7 +59,9 @@ public class JSONSelector implements IJsonSelector{
 		while(paths.hasNext()) {
 			String path=paths.next();
 			JsonElement ele=selectByJsonPath(path);
-			if(ele.isJsonPrimitive()) {
+			if(ele==null) {
+				//System.out.println("未抓到的属性"+binding.getPathProperty(path)+":"+path+"");
+			}else if(ele.isJsonPrimitive()) {
 				String type=binding.getPathType(path);
 				String prop=binding.getPathProperty(path);
 				prop=prop.substring(0,1).toUpperCase()+prop.substring(1);
@@ -85,8 +87,11 @@ public class JSONSelector implements IJsonSelector{
 				}
 				
 				
+			}else if(ele.isJsonNull()) {
+				//System.out.println("未抓到的属性"+binding.getPathProperty(path)+":"+path+"");
+				
 			}else {
-				System.out.println("不应该到达的地方");
+				System.out.println("不应该到达的地方"+ele.toString());
 			}
 		}
 	}
