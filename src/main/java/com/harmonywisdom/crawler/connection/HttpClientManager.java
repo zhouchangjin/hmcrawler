@@ -87,7 +87,10 @@ public class HttpClientManager {
 		try {
 			HttpGet httpget=new HttpGet(url);
 			buildCookieStore(url,httpget);
-			httpget.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Mobile Safari/537.36");
+			  httpget.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Mobile Safari/537.36");
+			  httpget.setHeader("Accept-Encoding","gzip, deflate, sdch");
+			  httpget.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+			  //httpget.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Mobile Safari/537.36");
 			CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
 			CloseableHttpResponse response=httpclient.execute(httpget);
 			HttpEntity entity = response.getEntity();

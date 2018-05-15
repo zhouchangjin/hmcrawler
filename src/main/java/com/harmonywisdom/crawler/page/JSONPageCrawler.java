@@ -65,11 +65,10 @@ public class JSONPageCrawler {
 		String res="";
 
 		for(String url:pageUrl) {
+			long before=System.currentTimeMillis();
 			res=context.fetchHTML(url);
-			//System.out.println(res);
-			if(res.contains("ErrorCode")) {
-				continue;
-			}
+			long diff=System.currentTimeMillis()-before;
+			System.out.println("用时"+diff);
 			Gson gson=new Gson();
 			Object obj=gson.fromJson(res, clz);
 			list.add(obj);

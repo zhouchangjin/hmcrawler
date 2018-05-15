@@ -46,5 +46,34 @@ public class PictureFetcher {
 		}
 		return null;
 	}
+	
+	public static String FetchPicture(String url,String savefileName,String savePath,String suffix){
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpget=new HttpGet(url);
+		String chars[]=url.split("\\.");
+		
+		String finalFileName=savePath+"/"+savefileName+"."+suffix;
+		try {
+			CloseableHttpResponse response=httpclient.execute(httpget);
+			HttpEntity entity=response.getEntity();
+			InputStream is=entity.getContent();
+			byte[] outbytes=new byte[1024];
+			int size=0;
+			OutputStream os=new FileOutputStream(new File(finalFileName));
+			while((size=is.read(outbytes))>0){
+				os.write(outbytes, 0, size);
+			}
+			os.flush();
+			os.close();
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }
