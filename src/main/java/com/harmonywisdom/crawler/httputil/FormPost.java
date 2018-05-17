@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.Consts;
 import org.apache.http.Header;
@@ -21,8 +23,18 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.message.BasicNameValuePair;
 
 public class FormPost {
+	
+	public static String formPostFromMap(String url,Map<String,String> formMap,Header cookieheader,String host) {
+		List<NameValuePair> list=new ArrayList<NameValuePair>();
+		for(String key:formMap.keySet()) {
+			BasicNameValuePair pair=new BasicNameValuePair(key, formMap.get(key));
+			list.add(pair);
+		}
+		return formPost(url,list,cookieheader,host);
+	}
 	
 	
 	public static String formPost(String url,List<NameValuePair> formparams,Header cookieheader,String host){
