@@ -268,7 +268,7 @@ public class HtmlFetcher {
 		        	
 		        	String line="";
 		        	while((line=br.readLine())!=null){
-		        		System.out.println(line);
+		        		//System.out.println(line);
 		        		buffer+=line+"\n";
 		        	}
 		        } finally {
