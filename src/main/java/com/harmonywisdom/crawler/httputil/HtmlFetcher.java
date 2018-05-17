@@ -8,16 +8,24 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.message.BasicNameValuePair;
 
 public class HtmlFetcher {
 	public static String FetchHtml(String url,String... params){
@@ -235,6 +243,47 @@ public class HtmlFetcher {
 		}
 		return "";
 		
+	}
+	
+	
+	public static String postForm(String url,Map<String,String> formMap) {
+		String buffer="";
+		List<NameValuePair> list=new ArrayList<NameValuePair>();
+		for(String key:formMap.keySet()) {
+			BasicNameValuePair pair=new BasicNameValuePair(key, formMap.get(key));
+			list.add(pair);
+		}
+		UrlEncodedFormEntity formentity = new UrlEncodedFormEntity(list, Consts.UTF_8);
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httpPost=new HttpPost(url);
+		httpPost.setEntity(formentity);
+		try {
+			CloseableHttpResponse response=httpclient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+		    if (entity != null) {
+		        InputStream instream = entity.getContent();
+		        BufferedReader br=new BufferedReader(new InputStreamReader(instream));
+		        try {
+		            // do something useful
+		        	
+		        	String line="";
+		        	while((line=br.readLine())!=null){
+		        		System.out.println(line);
+		        		buffer+=line+"\n";
+		        	}
+		        } finally {
+		            instream.close();
+		        }
+		    }
+		    return buffer;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return buffer;
 	}
 
 }
