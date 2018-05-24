@@ -68,6 +68,9 @@ public class ObjectPageBingding {
 		XMLNode node=XMLReader.parseXMLString(cont);
 		
 		List<XMLNode> nodes=node.getNodes("Prop");
+		if(nodes==null) {
+			return binding;
+		}
 		for(XMLNode current:nodes) {
 			String name=current.getAttribute("name").toString();
 			String type=current.getAttribute("type").toString();
