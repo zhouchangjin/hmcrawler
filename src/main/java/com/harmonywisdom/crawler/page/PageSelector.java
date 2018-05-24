@@ -139,7 +139,12 @@ public class PageSelector implements IPageSelector {
 				}else if(dataType.equals("Double")) {
 					Method m = obj.getClass().getMethod("set" + propName, Double.class);
 					if(m!=null) {
-						m.invoke(obj, Double.parseDouble(value));
+						if(value==null || value.trim().equals("")) {
+							m.invoke(obj, 0.0);
+						}else {
+							m.invoke(obj, Double.parseDouble(value));
+						}
+						
 					}
 					
 				}else if(dataType.equals("List")) {
