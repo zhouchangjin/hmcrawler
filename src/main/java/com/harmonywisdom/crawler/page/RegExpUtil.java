@@ -17,6 +17,17 @@ public class RegExpUtil {
 	
 	public final static String HTMLESCAPE="&[^&]+;";
 	
+	public final static String BOOKNAMEREG="《.*》";
+	
+	public static String findStr(String ori,String reg) {
+		Pattern pattern=Pattern.compile("("+reg+")");
+		Matcher m=pattern.matcher(ori);
+		while(m.find()){
+			String findStr=m.group(0);
+			return findStr;
+		}
+		return null;
+	}
 	
 	public static String replaceAllHtmlTag(String input){
 		String result=input.replaceAll(HTMLTAGREG, "");
