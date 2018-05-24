@@ -25,6 +25,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
 public class HtmlFetcher {
@@ -153,6 +154,58 @@ public class HtmlFetcher {
 		}
 		return "";
 	}
+	
+	
+	
+	public static String FetchFromUrlWithHeader(String urlWithParameters,Map<String,String> map) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			HttpGet httpget=new HttpGet(urlWithParameters);
+			for(String key:map.keySet()) {
+				BasicHeader header=new BasicHeader(key, map.get(key));
+				httpget.addHeader(header);
+			}
+			CloseableHttpResponse response=httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			StringBuffer sb=new StringBuffer();
+		    if (entity != null) {
+		    	String charset=entity.getContentType().toString();
+		    	CharsetDecoder decoder=null;
+		    	if(charset.contains("gb2312")) {
+		    		decoder=Charset.forName("GBK").newDecoder();
+		    	}
+		        InputStream instream = entity.getContent();
+		        BufferedReader br=null;
+		        if(decoder==null) {
+		        	br=new BufferedReader(new InputStreamReader(instream));
+		        }else {
+		        	br=new BufferedReader(new InputStreamReader(instream,decoder)); 
+		        }
+		        
+		        try {
+		            // do something useful
+		        	String line="";
+		        	while((line=br.readLine())!=null){
+		        		//System.out.println(line);
+		        		sb.append(line);
+		        	}
+		        	return sb.toString();
+		        } finally {
+		            instream.close();
+		        }
+		    }
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+		return "";
+	}
+	
 	
 	public static String FetchFromUrl(String urlWithParameters) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
