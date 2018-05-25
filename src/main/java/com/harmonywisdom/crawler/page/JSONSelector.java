@@ -1,7 +1,6 @@
 package com.harmonywisdom.crawler.page;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.Iterator;
 
 import com.gamewolf.util.lang.IntegerParser;

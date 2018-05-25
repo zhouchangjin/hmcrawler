@@ -59,7 +59,7 @@ public class JSONPageCrawler {
 		selector=new JSONSelector();
 	}
 	
-	public List<Object> crawl(Class clz){
+	public <T> List<Object> crawl(Class<T> clz){
 		
 		List<Object> list=new ArrayList<Object>();
 		String res="";
