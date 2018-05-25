@@ -20,6 +20,28 @@ public class RedirectFetcher {
 
 	}
 	
+	public static String getRedirect(String url) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		RequestConfig config=RequestConfig.custom().setRedirectsEnabled(false).build();
+		HttpGet httpget = new HttpGet(url);
+		httpget.setConfig(config);
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			Header h = response.getFirstHeader("Location");
+			String location = h.getValue();
+			return location;
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+	}
+	
 
 	public static String getRedirect(String url, String... params) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
