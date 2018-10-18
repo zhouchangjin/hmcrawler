@@ -288,7 +288,7 @@ public class PageSelector implements IPageSelector {
 
 		PageSelector parser = new PageSelector(HtmlFetcher.FetchHtml("http://www.51meiyu.cn"));
 		parser.initialize();
-		String tmp = parser.selectByXpath("//div[@class='phonelabel']");
+		//String tmp = parser.selectByXpath("//div[@class='phonelabel']");
 		String tm2 = parser.selectAttribute("//p[@class='else_sort']/a/@href");
 		
 		
