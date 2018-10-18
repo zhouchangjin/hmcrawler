@@ -50,7 +50,7 @@ public class PictureFetcher {
 	public static String FetchPicture(String url,String savefileName,String savePath,String suffix){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget=new HttpGet(url);
-		String chars[]=url.split("\\.");
+		//String chars[]=url.split("\\.");
 		
 		String finalFileName=savePath+"/"+savefileName+"."+suffix;
 		try {
