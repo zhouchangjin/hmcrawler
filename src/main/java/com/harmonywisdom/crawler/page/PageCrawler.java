@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.harmonywisdom.crawler.connection.HttpClientManager;
+import com.harmonywisdom.crawler.proxy.Proxy;
+import com.harmonywisdom.crawler.proxy.ProxyTap;
+import com.harmonywisdom.crawler.proxy.ProxyTester;
 
 public class PageCrawler {
 	
@@ -14,6 +17,8 @@ public class PageCrawler {
 	public ObjectPageBingding binding;
 	public IInitializer initialize=null;
 	public static HttpClientManager context=new HttpClientManager();
+	
+	private Proxy proxy=null;
 	
 	public void setInitializer(IInitializer init) {
 		selector.setInitializer(init);
@@ -43,6 +48,49 @@ public class PageCrawler {
 		selector=new PageSelector();
 	}
 	
+	public List<Object> crawlWithProxy(Class clz,ProxyTap tap,ProxyTester tester){
+		selector.setClz(clz);
+		List<Object> list=new ArrayList<Object>();
+		String res="";
+		if(proxy==null) {
+			proxy=tap.getProxy();
+		}
+		
+		if(!tap.testProxy(proxy, tester)) {
+			proxy=tap.getProxy();
+		}
+		
+		for(String url:pageUrl) {
+			res=context.fetchHTMLWithProxy(url, proxy);
+			selector.setCont(res);
+			selector.initialize();
+			Object obj=selector.buildObject(binding);
+			
+			
+			try {
+				Method m=obj.getClass().getMethod("setUrl", String.class);
+				m.invoke(obj, url);
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				list.add(obj);
+			}
+		}
+		return list;
+	}
 	
 	public List<Object> crawl(Class clz){
 		selector.setClz(clz);
