@@ -170,6 +170,7 @@ public class PageSelector implements IPageSelector {
 	@Override
 	public  Object buildObject(ObjectPageBingding binding) {
 		// TODO Auto-generated method stub
+		//System.out.println(cont);
 		try {
 			Object obj=clz.newInstance();
 			if(this.initializer!=null) {

@@ -87,6 +87,7 @@ public class BaiduIndexSearch {
 				String link=t.getLeft().toString();
 				String id=link.split("url=")[1];
 				String url=RedirectFetcher.getRedirect("http://www.baidu.com/link", "url="+id);
+				System.out.println(url);
 				IndexingStatus is=new IndexingStatus();
 				is.setPage(i);
 				is.setSite(siteDomain);
@@ -106,15 +107,15 @@ public class BaiduIndexSearch {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
 			SimpleDateFormat sdfFile=new SimpleDateFormat("yyyyMMdd");
 			BufferedWriter bw=new BufferedWriter(new FileWriter(new File("c:/index"+sdfFile.format(new Date())+".csv")));
-			List<IndexingStatus> islist=siteIndex("51meiyu.cn", 1);
+			List<IndexingStatus> islist=siteIndex("product.dangdang.com", 1);
 			for(IndexingStatus s:islist) {
 				String line=s.getUrl()+","+sdf.format(s.getTime())+","+"收录,未知,未知,未知,未知";
 				System.out.println(line);
 				bw.append(line);
 				bw.newLine();
-				
+				bw.flush();
 			}
-			bw.flush();
+			
 			bw.close();
 			
 		} catch (IOException e) {
