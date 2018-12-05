@@ -192,10 +192,14 @@ public class HttpClientManager {
 		try {
 			HttpGet httpget=new HttpGet(url);
 			buildCookieStore(url,httpget);
-			  httpget.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Mobile Safari/537.36");
-			  httpget.setHeader("Accept-Encoding","gzip, deflate, sdch");
-			  httpget.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-			  //httpget.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Mobile Safari/537.36");
+			//httpget.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Mobile Safari/537.36");
+			httpget.setHeader("User-Agent","MQQBrowser/26 Mozilla/5.0 (Linux; U; Android 2.3.7; zh-cn; MB200 Build/GRJ22; CyanogenMod-7) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");  
+			httpget.setHeader("Accept-Encoding","gzip, deflate, sdch");
+			httpget.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+			httpget.setHeader("Host", HttpUrlUtil.getHost(url));
+			 
+			  
+			  
 			CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
 			CloseableHttpResponse response=httpclient.execute(httpget);
 			HttpEntity entity = response.getEntity();
@@ -241,7 +245,7 @@ public class HttpClientManager {
 	public static void main(String args[]) {
 		HttpClientManager contet=new HttpClientManager();
 		contet.login("http://product.m.dangdang.com/detail23812468-0-1.html");
-		System.out.println(contet.fetchHTML("http://product.m.dangdang.com/detail23812468-0-1.html"));
+		System.out.println(contet.fetchHTML("http://product.m.dangdang.com/1325787266.html"));
 	}
 
 }
