@@ -209,6 +209,8 @@ public class HttpClientManager {
 		    	CharsetDecoder decoder=null;
 		    	if(charset.contains("gb2312")) {
 		    		decoder=Charset.forName("GBK").newDecoder();
+		    	}else if(charset.contains("gbk")) {
+		    		decoder=Charset.forName("GBK").newDecoder();
 		    	}
 		        InputStream instream = entity.getContent();
 		        BufferedReader br=null;
