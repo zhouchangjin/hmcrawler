@@ -173,6 +173,8 @@ public class HtmlFetcher {
 		    	CharsetDecoder decoder=null;
 		    	if(charset.contains("gb2312")) {
 		    		decoder=Charset.forName("GBK").newDecoder();
+		    	}else if(charset.contains("gbk")) {
+		    		decoder=Charset.forName("GBK").newDecoder();
 		    	}
 		        InputStream instream = entity.getContent();
 		        BufferedReader br=null;
@@ -206,6 +208,49 @@ public class HtmlFetcher {
 		return "";
 	}
 	
+	public static String FetchFromUrlWithCharsetSpecified(String url,String charset) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			HttpGet httpget=new HttpGet(url);
+			CloseableHttpResponse response=httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			StringBuffer sb=new StringBuffer();
+		    if (entity != null) {
+		    	
+		    	CharsetDecoder decoder=null;
+		    	decoder=Charset.forName(charset).newDecoder();
+		        InputStream instream = entity.getContent();
+		        BufferedReader br=null;
+
+		        if(decoder==null) {
+		        	br=new BufferedReader(new InputStreamReader(instream));
+		        }else {
+		        	br=new BufferedReader(new InputStreamReader(instream,decoder)); 
+		        }
+		        
+		        try {
+		            // do something useful
+		        	String line="";
+		        	while((line=br.readLine())!=null){
+		        		//System.out.println(line);
+		        		sb.append(line);
+		        	}
+		        	return sb.toString();
+		        } finally {
+		            instream.close();
+		        }
+		    }
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+		return "";
+	}
 	
 	public static String FetchFromUrl(String urlWithParameters) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -220,6 +265,8 @@ public class HtmlFetcher {
 		    	String charset=entity.getContentType().toString();
 		    	CharsetDecoder decoder=null;
 		    	if(charset.contains("gb2312")) {
+		    		decoder=Charset.forName("GBK").newDecoder();
+		    	}else if(charset.contains("gbk")) {
 		    		decoder=Charset.forName("GBK").newDecoder();
 		    	}
 		        InputStream instream = entity.getContent();
