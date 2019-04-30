@@ -196,7 +196,7 @@ public class HttpClientManager {
 			httpget.setHeader("User-Agent","MQQBrowser/26 Mozilla/5.0 (Linux; U; Android 2.3.7; zh-cn; MB200 Build/GRJ22; CyanogenMod-7) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");  
 			httpget.setHeader("Accept-Encoding","gzip, deflate, sdch");
 			httpget.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-			//httpget.setHeader("Host", HttpUrlUtil.getHost(url));
+			httpget.setHeader("Host", HttpUrlUtil.getHost(url));
 			 
 			  
 			  
