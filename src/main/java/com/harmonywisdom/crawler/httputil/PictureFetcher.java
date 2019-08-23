@@ -22,6 +22,17 @@ public class PictureFetcher {
 		if(chars.length>1){
 			suf=chars[chars.length-1];
 		}
+		
+		if(suf.length()>10) {
+			if(suf.contains("jpg")) {
+				suf="jpg";
+			}else if(suf.contains("png")) {
+				suf="png";
+			}else {
+				suf="jpg";
+			}
+			
+		}
 		System.out.println("文件后缀"+suf);
 		String finalFileName=savePath+"/"+savefileName+"."+suf;
 		try {
@@ -30,6 +41,7 @@ public class PictureFetcher {
 			InputStream is=entity.getContent();
 			byte[] outbytes=new byte[1024];
 			int size=0;
+			System.out.println(finalFileName);
 			OutputStream os=new FileOutputStream(new File(finalFileName));
 			while((size=is.read(outbytes))>0){
 				os.write(outbytes, 0, size);
