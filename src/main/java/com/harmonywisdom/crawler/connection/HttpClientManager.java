@@ -98,6 +98,9 @@ public class HttpClientManager {
 	public void login(String url) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget=new HttpGet(url);
+		httpget.setHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0");
+		httpget.setHeader("Accept-Encoding","gzip, deflate, sdch");
+		httpget.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 		CloseableHttpResponse response;
 		try {
 			response = httpclient.execute(httpget);
@@ -217,7 +220,8 @@ public class HttpClientManager {
 			buildCookieStore(url,httpget);
 			//httpget.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Mobile Safari/537.36");
 			//httpget.setHeader("User-Agent","MQQBrowser/26 Mozilla/5.0 (Linux; U; Android 2.3.7; zh-cn; MB200 Build/GRJ22; CyanogenMod-7) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");  
-			httpget.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0");
+			//httpget.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0");
+			httpget.setHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0");
 			httpget.setHeader("Accept-Encoding","gzip, deflate, sdch");
 			httpget.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 			//不要随便加下面的这一行
