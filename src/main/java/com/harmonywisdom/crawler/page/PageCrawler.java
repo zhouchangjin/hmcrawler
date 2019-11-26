@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gamewolf.util.file.FileUtil;
 import com.harmonywisdom.crawler.connection.HttpClientManager;
 import com.harmonywisdom.crawler.proxy.Proxy;
 import com.harmonywisdom.crawler.proxy.ProxyTap;
@@ -88,6 +89,48 @@ public class PageCrawler {
 			}finally {
 				list.add(obj);
 			}
+		}
+		return list;
+	}
+	
+	public List<Object> crawlFile(Class clz){
+		selector.setClz(clz);
+		List<Object> list=new ArrayList<Object>();
+		String res="";
+		for(String url:pageUrl) {
+			
+			res=FileUtil.readTxtFile(url);
+			
+			
+			selector.setCont(res);
+			selector.initialize();
+			Object obj=selector.buildObject(binding);
+			
+			
+			try {
+				Method m=obj.getClass().getMethod("setUrl", String.class);
+				m.invoke(obj, url);
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				list.add(obj);
+			}
+			
+			
+			
 		}
 		return list;
 	}
