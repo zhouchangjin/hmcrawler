@@ -27,19 +27,6 @@ public class HTMLNewsContentExtractor implements IContentExtractor{
 			int rowCounter=0;
 			while((line=br.readLine())!=null){
 				rowCounter++;
-				//System.out.println(line);
-//				Map<String,String> map=PageParser.match(line, "img", "src");
-//				Iterator<String> keyIt=map.keySet().iterator();
-//				while(keyIt.hasNext()){
-//					String key=keyIt.next();
-//					line=line.replace(key, "图片("+map.get(key)+")");
-//				}
-//				map=PageParser.match(line, "a", "href");
-//				keyIt=map.keySet().iterator();
-//				while(keyIt.hasNext()){
-//					String key=keyIt.next();
-//					line=line.replace(key, "("+map.get(key)+")");
-//				}
 				List<Tuple<String,String>> list=PageParser.match(line);
 				String newLine="";
 				for(int i=0;i<list.size();i++){
@@ -63,7 +50,7 @@ public class HTMLNewsContentExtractor implements IContentExtractor{
 					}
 					
 				}
-				System.out.println(newLine);
+				System.out.println(line+"----"+newLine);
 				int allCharacters=newLine.length();
 				String chineseLine=RegExpUtil.replaceAllEnglish(newLine);
 				int chineses=chineseLine.length();

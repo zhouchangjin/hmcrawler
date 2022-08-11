@@ -133,7 +133,7 @@ public class LCFStore {
 		}
 		
 		for(int i=getLineStart();i<=getLineEnd();i++){
-			System.out.println(lcfs.get(i).getLine());
+			System.out.println("line :"+i+" "+lcfs.get(i).getLine());
 		}
 		System.out.println(this.getLineStart()+","+this.getMaxLine()+","+this.getLineEnd());
 		
