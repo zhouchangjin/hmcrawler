@@ -4,6 +4,11 @@
   <artifactId>hmcrawler</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <dependencies>
+	<dependency>
+	<groupId>com.alibaba</groupId>
+	<artifactId>fastjson</artifactId>
+	<version>1.2.7</version>
+	</dependency>
   	<dependency>
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpclient</artifactId>

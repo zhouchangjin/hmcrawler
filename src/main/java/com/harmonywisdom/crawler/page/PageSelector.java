@@ -114,57 +114,12 @@ public class PageSelector implements IPageSelector {
 	}
 
 
-	private void process(Object obj, String prop, String dataType, Object val) {
-		String propName = prop.substring(0, 1).toUpperCase() + prop.substring(1);
-		String value="";
-		List objList=null;
-		if(val instanceof String) {
-			value=val.toString();
-		}else if(val instanceof List) {
-			objList=(List)val;
-		}
+	private void process(Object obj, String prop, String dataType, Object val) {	
 		try {
-				if (dataType.equals("String")) {
-					Method m = obj.getClass().getMethod("set" + propName, String.class);
-					if(m!=null) {
-						m.invoke(obj, value);
-					}
-					
-				}else if(dataType.equals("Integer")) {
-					Method m = obj.getClass().getMethod("set" + propName, Integer.class);
-					if(m!=null) {
-						m.invoke(obj, Integer.parseInt(value));
-					}
-					
-				}else if(dataType.equals("Double")) {
-					Method m = obj.getClass().getMethod("set" + propName, Double.class);
-					if(m!=null) {
-						if(value==null || value.trim().equals("")) {
-							m.invoke(obj, 0.0);
-						}else {
-							m.invoke(obj, Double.parseDouble(value));
-						}
-						
-					}
-					
-				}else if(dataType.equals("List")) {
-					Method m = obj.getClass().getMethod("set" + propName, List.class);
-					if(m!=null) {
-						m.invoke(obj,val);
-					}
-				}
-
-		} catch (NoSuchMethodException e) {
+			CrawlerBeanUtil.SetPropValue(prop, val, dataType, obj);
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		} 
 	}
 
 	@Override

@@ -145,7 +145,15 @@ public class PageCrawler {
 			selector.initialize();
 			Object obj=selector.buildObject(binding);
 			
+			try {
+				CrawlerBeanUtil.SetPropValue("url", url, "String", obj);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				list.add(obj);
+			}
 			
+			/**
 			try {
 				Method m=obj.getClass().getMethod("setUrl", String.class);
 				m.invoke(obj, url);
@@ -166,7 +174,7 @@ public class PageCrawler {
 				e.printStackTrace();
 			}finally {
 				list.add(obj);
-			}
+			}**/
 			
 			
 			
