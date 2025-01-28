@@ -135,6 +135,36 @@ public class PageCrawler {
 		return list;
 	}
 	
+	public List<Object> crawlByUrls(Class clz,List<String> urlList){
+		selector.setClz(clz);
+		List<Object> list=new ArrayList<Object>();
+		for(String url:urlList) {
+			String page=context.fetchHTML(url);
+			selector.setCont(page);
+			selector.initialize();
+			Object obj=selector.buildObject(binding);
+			try {
+				CrawlerBeanUtil.SetPropValue("url", url, "String", obj);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			list.add(obj);
+		}
+		return list;
+	}
+	
+	public List<Object> crawlByHtmlCont(Class clz,List<String> pageCont){
+		selector.setClz(clz);
+		List<Object> list=new ArrayList<Object>();
+		for(String page:pageCont) {
+			selector.setCont(page);
+			selector.initialize();
+			Object obj=selector.buildObject(binding);
+			list.add(obj);
+		}
+		return list;
+	}
+	
 	public List<Object> crawl(Class clz){
 		selector.setClz(clz);
 		List<Object> list=new ArrayList<Object>();
@@ -151,33 +181,7 @@ public class PageCrawler {
 				e.printStackTrace();
 			} finally {
 				list.add(obj);
-			}
-			
-			/**
-			try {
-				Method m=obj.getClass().getMethod("setUrl", String.class);
-				m.invoke(obj, url);
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally {
-				list.add(obj);
-			}**/
-			
-			
-			
+			}			
 		}
 		return list;
 	}
