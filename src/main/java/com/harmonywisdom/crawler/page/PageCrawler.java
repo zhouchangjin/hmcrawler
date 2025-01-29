@@ -5,6 +5,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
 import com.gamewolf.util.file.FileUtil;
 import com.harmonywisdom.crawler.connection.HttpClientManager;
 import com.harmonywisdom.crawler.proxy.Proxy;
@@ -152,7 +158,15 @@ public class PageCrawler {
 		}
 		return list;
 	}
-	
+	public List<Object> crawlByNodes(Class clz,List<Node> nodes){
+		selector.setClz(clz);
+		List<Object> list=new ArrayList<Object>();
+		for(Node node:nodes) {
+			Object obj=selector.buildObject(binding,node);
+			list.add(obj);
+		}
+		return list;
+	}
 	public List<Object> crawlByHtmlCont(Class clz,List<String> pageCont){
 		selector.setClz(clz);
 		List<Object> list=new ArrayList<Object>();
