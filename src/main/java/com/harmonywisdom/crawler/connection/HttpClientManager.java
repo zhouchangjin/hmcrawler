@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.Consts;
 import org.apache.http.Header;
@@ -44,6 +45,8 @@ public class HttpClientManager {
 	
 	String referer="";
 	
+	Map<String,String> requestHeaderMap;
+	
 	public String getHost() {
 		return host;
 	}
@@ -63,7 +66,11 @@ public class HttpClientManager {
 	}
 
 	public HttpClientManager(){
-		
+		requestHeaderMap=new HashMap<String, String>();
+	}
+	
+	public void addCommonHeadder(String key,String value) {
+		requestHeaderMap.put(key, value);
 	}
 	
 	void buildCookieStore(String url,HttpGet httpget) {
@@ -235,7 +242,9 @@ public class HttpClientManager {
 				System.out.println("设置refer");
 				httpget.setHeader("Referer", referer);
 			}
-			  
+			for(String key:requestHeaderMap.keySet()) {
+				httpget.setHeader(key, requestHeaderMap.get(key));
+			}
 			  
 			CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
 			CloseableHttpResponse response=httpclient.execute(httpget);
